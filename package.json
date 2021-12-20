@@ -1,0 +1,33 @@
+{
+  "name": "idw2contour",
+  "version": "1.0.0",
+  "description": "idw插值站点数据，生成等值面",
+  "dependencies": {
+    "@turf/intersect": "^6.5.0",
+    "d3-contour": "^3.0.1",
+    "uglifyjs-webpack-plugin": "^2.2.0",
+    "webpack": "^5.65.0",
+    "webpack-cli": "^4.9.1"
+  },
+  "scripts": {
+    "serve": "webpack serve",
+    "build": "webpack --mode production"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://gitee.com/angiser/idw2contour.git"
+  },
+  "keywords": [
+    "idw",
+    "插值",
+    "等值面"
+  ],
+  "author": "angiser",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.16.0",
+    "@babel/preset-env": "^7.16.4",
+    "babel-loader": "^8.2.3",
+    "webpack-dev-server": "^4.6.0"
+  }
+}

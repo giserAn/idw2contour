@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>idw插值站点数据，生成等值面</title>
+
+    <!-- mapbox gl api -->
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.js"></script>
+
+    <!-- mock-data -->
+    <script src="./mock-data/colorArr.js"></script>
+    <script src="./mock-data/data.js"></script>
+    <script src="./mock-data/cq-border.js"></script>
+
+    <!-- Idw2Contour-utils 工具包 -->
+    <script src="./dist/Idw2Contour-utils.js"></script>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map"></div>
+    <script>
+        let breaks = []
+        let valueColors = []
+        colorArr.forEach((item) => {
+            breaks.push(item.value);
+            valueColors = [...valueColors, item.value, item.color]
+        })
+
+        const Idw2Contour = Idw2ContourUtils.Idw2Contour
+        const {
+            vector_contours: geoJson
+        } = Idw2Contour({
+            points: ResData,
+            breaks,
+            clpFeature: CqBorder.features[0]
+        })
+
+        mapboxgl.accessToken =
+            'pk.eyJ1IjoiZ2lzZXJhbiIsImEiOiJjamwzaHNrOGUwOXhkM3BxODJ2djRpc2J3In0.wwiOzEdoADwjarVeMGwUMQ';
+        const map = new mapboxgl.Map({
+            container: 'map', // container ID
+            style: 'mapbox://styles/mapbox/streets-v11', // style URL
+            center: [107.005415, 30.30928], // starting position [lng, lat]
+            zoom: 6.8 // starting zoom
+        });
+        map.on("load", () => {
+            console.log("mapbox 初始化成功");
+            map.addLayer({
+                id: 'layerid',
+                type: "fill",
+                source: {
+                    type: "geojson",
+                    data: geoJson,
+                },
+                layout: {},
+                paint: {
+                    "fill-color": ["interpolate", ["linear"],
+                        ["get", "value"], ...valueColors
+                    ],
+                    "fill-opacity": 1,
+                },
+
+            });
+        });
+    </script>
+</body>
+
+</html>
