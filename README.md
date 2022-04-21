@@ -4,7 +4,7 @@
 插值后生成等值面，并裁切等值面
 
 #### 示例
-![输入图片说明](https://giseran.github.io/idw2contour/example/index.html)
+[demo](https://giseran.github.io/idw2contour/example/index.html)
 
 #### 使用
 
